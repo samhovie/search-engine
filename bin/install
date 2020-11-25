@@ -1,0 +1,25 @@
+#!/bin/bash
+set -Eeuo pipefall
+set -x
+python -m venv env
+set +u
+source env/bin/activate
+set -u
+
+
+set +u
+deactivate
+source env/bin/activaate
+set -u
+
+pip install -r index/requirements.txt
+pip install -e index
+pip install -r search/requirements.txt
+pip install -e search
+
+mkdir -p tmp
+export TMPDIR=tmp
+
+pushd $VIRTUAL_ENV/bin
+ln -sf ../../tests/utils/hadoop.py hadoop
+popd
