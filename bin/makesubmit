@@ -1,0 +1,53 @@
+#!/bin/bash
+#
+# ./bin/makesubmit
+
+# Stop on errors, print commands
+# See https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
+set -Eeuo pipefail
+
+SHELL_NAME="$(uname -s)"
+if [ "$SHELL_NAME" = 'Darwin' ]; then
+	tar \
+		-cJvf submit.tar.xz \
+		--disable-copyfile \
+		--exclude '*input.csv' \
+		--exclude '*/input/*' \
+		--exclude '*/input_multi/*' \
+		--exclude '*output*' \
+		--exclude '*__pycache__*' \
+		--exclude '*stopwords.txt' \
+		--exclude '*.out' \
+		--exclude '*.sql' \
+		--exclude '*.sqlite3' \
+		--exclude '*.jar' \
+		--exclude '*.egg-info' \
+		--exclude '*var*' \
+		--exclude '*tmp*' \
+		--exclude 'hadoop/inverted_index/inverted_index.txt' \
+		bin \
+		hadoop \
+		index \
+		search
+else
+	tar \
+		-cJvf submit.tar.xz \
+		--exclude '*input.csv' \
+		--exclude '*/input/*' \
+		--exclude '*/input_multi/*' \
+		--exclude '*output*' \
+		--exclude '*__pycache__*' \
+		--exclude '*stopwords.txt' \
+		--exclude '*.out' \
+		--exclude '*.sql' \
+		--exclude '*.sqlite3' \
+		--exclude '*.jar' \
+		--exclude '*.egg-info' \
+		--exclude '*var*' \
+		--exclude '*tmp*' \
+		--exclude 'hadoop/inverted_index/inverted_index.txt' \
+		bin \
+		hadoop \
+		index \
+		search
+fi

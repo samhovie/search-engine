@@ -1,0 +1,10 @@
+#!/bin/bash
+#
+# clean 
+
+# Stop on errors, print commands
+# See https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
+set -Eeuo pipefail
+
+rm -rf hadoop/inverted_index/output/hadooptmp
+rm -f submit.tar.gz
