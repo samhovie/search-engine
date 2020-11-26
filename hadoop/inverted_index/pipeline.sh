@@ -15,23 +15,23 @@
 set -Eeuo pipefail
 
 # Remove first output directory, if it exists
-rm -rf output1
+rm -rf output
 
 # Run first MapReduce job
 hadoop \
   jar ../hadoop-streaming-2.7.2.jar \
   -input input \
-  -output output1 \
-  -mapper ./somemap.py \
-  -reducer ./somereduce.py \
+  -output output \
+  -mapper ./map0.py \
+  -reducer ./reduce0.py \
 
 # Remove second output directory, if it exists
-rm -rf output2
+#rm -rf output2
 
 # Run second MapReduce job
-hadoop \
-  jar hadoop-streaming-2.7.2.jar \
-  -input output1 \
-  -output output2 \
-  -mapper ./somemap.py \
-  -reducer ./somereduce.py
+#hadoop \
+#  jar hadoop-streaming-2.7.2.jar \
+#  -input output1 \
+#  -output output2 \
+#  -mapper ./somemap.py \
+#  -reducer ./somereduce.py

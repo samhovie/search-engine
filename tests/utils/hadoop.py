@@ -215,7 +215,7 @@ def map_stage(exe, input_dir, output_dir, num_map, enforce_keyspace):
         print("+ {} < {} > {}".format(exe.name, input_path, output_path))
         with input_path.open() as infile, output_path.open('w') as outfile:
             subprocess.run(
-                str(exe),
+                f"'{exe}'",
                 shell=True,
                 check=True,
                 stdin=infile,
@@ -307,7 +307,7 @@ def reduce_stage(exe, input_dir, output_dir, num_reduce, enforce_keyspace):
         print("+ {} < {} > {}".format(exe.name, input_path, output_path))
         with open(input_path) as infile, open(output_path, 'w') as outfile:
             subprocess.run(
-                str(exe),
+                f"'{exe}'",
                 shell=True,
                 check=True,
                 stdin=infile,
