@@ -8,4 +8,4 @@ for _ in sys.stdin:
     count += 1
 
 with open("total_document_count.txt", "w") as f:
-    f.write(str(count))
+    f.write(f"{count}\n")
