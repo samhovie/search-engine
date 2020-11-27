@@ -22,7 +22,7 @@ def extract_words(row, stop_words):
 
 stop_words = None
 with open("stopwords.txt", "r") as stop_words_file:
-    stop_words = set(stop_words_file.readlines())
+    stop_words = set(stop_words_file.read().splitlines())
 
 csv.field_size_limit(sys.maxsize)
 for row in csv.reader(sys.stdin):
