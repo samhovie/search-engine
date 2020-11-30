@@ -15,23 +15,23 @@ stopwords_file = (INDEX_ROOT/"stopwords.txt").open(mode="r")
 inverted_index_idfs = {}
 inverted_index_docs = {}
 for line in inverted_index_file:
-    vals = line.split()
-    inverted_index_idfs[vals[0]] = vals[1]
+    vals = line.strip().split()
+    inverted_index_idfs[vals[0]] = float(vals[1])
     inverted_index_docs[vals[0]] = {}
     for i in range(2, len(vals), 3):
         inverted_index_docs[vals[0]][vals[i]] = {
-            "occurrences": vals[i+1],
-            "norm_factor": vals[i+2],
+            "occurrences": int(vals[i+1]),
+            "norm_squared": float(vals[i+2]),
         }
 
 pagerank = {}
 for line in pagerank_file:
-    pair = line.split(",")
-    pagerank[pair[0]] = pair[1] 
+    pair = line.strip().split(",")
+    pagerank[pair[0]] = float(pair[1])
 
 stopwords = []
 for line in stopwords_file:
-    stopwords.append(line)
+    stopwords.append(line.strip())
 
 # Tell our app about views and model.  This is dangerously close to a
 # circular import, which is naughty, but Flask was designed that way.
