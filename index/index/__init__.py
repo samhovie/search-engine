@@ -1,10 +1,15 @@
 """Insta485 package initializer."""
+import flask
 from pathlib import Path
 
+# app is a single object used by all the code modules in this package
+app = flask.Flask(__name__)  # pylint: disable=invalid-name
+
 # Load search files
-inverted_index_file = Path("./inverted_index.txt").open(mode="r")
-pagerank_file = Path("./pagerank.out").open(mode="r")
-stopwords_file = Path("./stopwords.txt").open(mode="r")
+INDEX_ROOT = Path(__file__).resolve().parent
+inverted_index_file = (INDEX_ROOT/"inverted_index.txt").open(mode="r")
+pagerank_file = (INDEX_ROOT/"pagerank.out").open(mode="r")
+stopwords_file = (INDEX_ROOT/"stopwords.txt").open(mode="r")
 
 # Create usable data structures from files
 inverted_index_idfs = {}
@@ -13,7 +18,7 @@ for line in inverted_index_file:
     vals = line.split()
     inverted_index_idfs[vals[0]] = vals[1]
     inverted_index_docs[vals[0]] = {}
-    for i in range(start=2, stop=len(vals) step=3):
+    for i in range(2, len(vals), 3):
         inverted_index_docs[vals[0]][vals[i]] = {
             "occurrences": vals[i+1],
             "norm_factor": vals[i+2],

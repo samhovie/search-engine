@@ -4,7 +4,7 @@ import index
 
 
 @index.app.route('/api/v1/hits/', methods=['GET'])
-def get_services():
+def get_hits():
     """Return a list of hits for the user query."""
     w = flask.request.args.get("w", default=0.5, type=float)
     query = flask.request.args.get("q", default="", type=str)
