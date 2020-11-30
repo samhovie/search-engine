@@ -21,6 +21,14 @@ def get_hits():
     query = [re.sub(r'[^a-zA-Z0-9]+', '', word) for word in query]
     query = [word for word in query if word not in index.stopwords]
 
+    # Short-circuit if any query word is not in index
+    for word in query:
+        if word not in index.inverted_index_idfs:
+            context = {
+                "hits": []
+            }
+            return flask.jsonify(**context)
+
     # Compute query vector
     q_vec = [index.inverted_index_idfs[word] for word in query]
     
@@ -47,7 +55,7 @@ def get_hits():
 
     hits = list(zip(scores, hit_docids))
     hits.sort()
-    hits = [{ "docid": hit[0], "score": hit[1] } for hit in hits]
+    hits = [{ "docid": hit[1], "score": hit[0] } for hit in hits]
 
     context = {
       "hits": hits
