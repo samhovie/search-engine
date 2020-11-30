@@ -19,7 +19,7 @@ for line in inverted_index_file:
     inverted_index_idfs[vals[0]] = float(vals[1])
     inverted_index_docs[vals[0]] = {}
     for i in range(2, len(vals), 3):
-        inverted_index_docs[vals[0]][vals[i]] = {
+        inverted_index_docs[vals[0]][int(vals[i])] = {
             "occurrences": int(vals[i+1]),
             "norm_squared": float(vals[i+2]),
         }
@@ -27,7 +27,7 @@ for line in inverted_index_file:
 pagerank = {}
 for line in pagerank_file:
     pair = line.strip().split(",")
-    pagerank[pair[0]] = float(pair[1])
+    pagerank[int(pair[0])] = float(pair[1])
 
 stopwords = []
 for line in stopwords_file:
