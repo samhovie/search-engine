@@ -14,6 +14,10 @@
 # See https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
 set -Eeuo pipefail
 
+# If run normally, this script can be run from any directory, since it will cd
+# to the inverted_index directory.
+cd "$(dirname -- "$0")"
+
 # Remove first output directory, if it exists
 rm -rf output
 
@@ -57,3 +61,6 @@ hadoop \
   -output output3 \
   -mapper ./map3.py \
   -reducer ./reduce3.py
+
+cat output3/part* > inverted_index.txt
+cp inverted_index.txt ../../index/index/inverted_index.txt

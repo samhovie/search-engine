@@ -33,7 +33,7 @@ output
 # EECS 485 Project 5
 output*
 total_document_count.txt
-*/hadoop/inverted_index/inverted_index.txt
+hadoop/inverted_index/inverted_index.txt
 
 # Python
 *.pyc
