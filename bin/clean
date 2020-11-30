@@ -8,5 +8,7 @@ set -Eeuo pipefail
 
 rm -rf hadoop/inverted_index/output*
 rm -f hadoop/inverted_index/total_document_count.txt
+rm -f hadoop/inverted_index/inverted_index.txt
+rm -f index/index/inverted_index.txt
 rm -f submit.tar.xz
 rm -rf tmp
