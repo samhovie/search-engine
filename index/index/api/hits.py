@@ -53,9 +53,10 @@ def get_hits():
 
         scores.append(w*pagerank + (1-w)*tfidf)
 
-    hits = list(zip(scores, hit_docids))
-    hits.sort()
-    hits = [{ "docid": hit[1], "score": hit[0] } for hit in hits]
+    hits = list(zip(hit_docids, scores))
+    hits.sort(key=lambda tup: tup[0], reverse=False)
+    hits.sort(key=lambda tup: tup[1], reverse=True)
+    hits = [{ "docid": hit[0], "score": hit[1] } for hit in hits]
 
     context = {
       "hits": hits

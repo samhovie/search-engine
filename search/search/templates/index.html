@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Wikipedia Explorer</title>
+  </head>
+  <body>
+    <!-- DO NOT CHANGE THIS (aside from where we say 'FIXME') -->
+    <form action="/" method="GET">
+        <p><input type="text" name="q"/></p>
+        <p><input type="range" name="w" min="0" max="1" step="0.01"/></p>
+        <input type="submit" value="Search"/>
+    </form>
+
+    <!-- Search Results -->
+    <section class="search-results">
+        {% if user_searched and search_results|length == 0 %}
+            <p class="no_results">No results.</p>
+        {% endif %}
+        {% for result in search_results %}
+            <div class="result">
+                <p class="doc_title">{{ result.title }}</p>
+                <p class="doc_summary">
+                    {{ result.summary if result.summary else "No summary available" }}
+                </p>
+            </div>
+        {% endfor %}
+    </section>
+  </body>
+</html>

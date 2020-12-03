@@ -6,49 +6,33 @@
 # See https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
 set -Eeuo pipefail
 
+source env/bin/activate
+
 PGREP="pgrep -af"
 if [ "$(uname -s)" = 'Darwin' ]; then
   PGREP="pgrep -lf"
 fi
 
 usage() {
-  >&2 echo "Usage: $0 (start|status|restart|stop)"
+  >&2 echo "Usage: $0 (start|restart|stop)"
 }
 
 run_start() {
-  if $PGREP search &>/dev/null; then
+  if $PGREP 'flask run --host 0.0.0.0 --port 8000' &>/dev/null; then
     >&2 echo 'Error: a process is already using port 8000'
     exit 1
   fi
-  >&2 echo "starting search server ..."
-  search 8000 &
-  sleep 2
+  echo "starting search server ..."
+  export FLASK_DEBUG=True
+  export FLASK_APP=search
+  export SEARCH_SETTINGS=config.py
+  flask run --host 0.0.0.0 --port 8000 &
 }
 
 
 run_stop() {
-  # Detect GNU vs BSD netcat.  We need netcat to close the connection after
-  # sending a message, which requires different options.
-  set +o pipefail  # Avoid erroneous failures due to grep returning non-zero
-  if nc -h 2>&1 | grep -q "\-c"; then
-    NC="nc -c"
-  elif nc -h 2>&1 | grep -q "\-N"; then
-    NC="nc -N"
-  elif nc -h 2>&1 | grep -q "\-C"; then
-    NC="nc -C"
-  else
-    echo "Error detecting netcat version."
-    exit 1
-  fi
-  set -o pipefail
-
-
-  # is this supposed to be different?
-  echo '{"message_type": "shutdown"}' | $NC localhost 8000 || true
-  sleep 2  
-
   echo 'stopping search server ...'
-  pkill -f search || true
+  pkill -f 'flask run --host 0.0.0.0 --port 8000' || true
 
 }
 
@@ -60,9 +44,6 @@ fi
 case $1 in
   "start")
     run_start
-    ;;
-  "status")
-    run_status
     ;;
   "restart")
     run_stop
