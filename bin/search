@@ -6,8 +6,6 @@
 # See https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
 set -Eeuo pipefail
 
-source env/bin/activate
-
 PGREP="pgrep -af"
 if [ "$(uname -s)" = 'Darwin' ]; then
   PGREP="pgrep -lf"
@@ -23,7 +21,6 @@ run_start() {
     exit 1
   fi
   echo "starting search server ..."
-  export FLASK_DEBUG=True
   export FLASK_APP=search
   export SEARCH_SETTINGS=config.py
   flask run --host 0.0.0.0 --port 8000 &> /dev/null &
