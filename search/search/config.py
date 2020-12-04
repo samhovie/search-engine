@@ -1,3 +1,4 @@
+"""Configures the search server."""
 import pathlib
 
 # URL of the index server

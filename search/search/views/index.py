@@ -1,9 +1,12 @@
+"""The search server."""
 import flask
-import search
 import requests
+import search
+
 
 @search.app.route('/', methods=['GET', 'POST'])
 def show_index():
+    """Show the / route for the search app."""
     # Connect to database
     connection = search.model.get_db()
 
@@ -22,21 +25,25 @@ def show_index():
         # Results are already sorted by score, so we can just get the first 10
         # results (at most) here.
         try:
-            response = requests.get(search.app.config["INDEX_API_URL"], params={
-                'w': weight,
-                'q': query,
-            }).json()["hits"][0:10]
+            response = requests.get(
+                search.app.config["INDEX_API_URL"],
+                params={
+                    'w': weight,
+                    'q': query,
+                }
+            ).json()["hits"][0:10]
         except requests.exceptions.ConnectionError:
             return flask.abort(500, "Index server not found")
 
-        # Go through the docids in the JSON and query database for title, summary matching docid
+        # Go through the docids in the JSON and query database for title,
+        # summary matching docid
         for hit in response:
             doc = connection.execute(
                 "SELECT title, summary FROM Documents "
                 "WHERE docid = ?;",
                 (hit["docid"],)
             ).fetchone()
-            assert(doc is not None)
+            assert doc is not None
             search_results.append(doc)
 
     context = {
